@@ -18,9 +18,7 @@ module.exports = {
 				const command = require(`${process.cwd()}/commands/${dir}/${file}`);
 				client.commands.set(command.data.name, command);
 
-				client.guilds.cache
-					.get(process.env.GUILD_ID)
-					?.commands.create(command.data);
+				msg.guild.commands.create(command.data);
 			}
 		});
 		console.log("Deployment done.");
