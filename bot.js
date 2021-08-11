@@ -32,7 +32,7 @@ for (const file of msgCommandFiles) {
 	client.message_commands.set(msgCommand.name, msgCommand);
 }
 
-/* Interaction commands set */
+/* Slash commands set */
 const commandFiles = fs
 	.readdirSync("./commands")
 	.filter((file) => file.endsWith(".js"));
@@ -42,7 +42,7 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
-/* Interaction commands handler */
+/* Slash commands handler */
 client.on("interactionCreate", async (interaction) => {
 	if (!interaction.isCommand()) return;
 
