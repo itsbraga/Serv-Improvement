@@ -1,2 +1,9 @@
-# Serv-Improvement
-Bots projects for our Serv
+## .env
+
+```env
+TOKEN=''
+GUILD_ID=''
+OWNER_ID=''
+MONGO_URI='mongodb://localhost:27017'
+PREFIX="Man "
+```

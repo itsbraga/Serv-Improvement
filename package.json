@@ -1,0 +1,30 @@
+{
+	"name": "man",
+	"version": "1.0.0",
+	"description": "Bots projects for our Serv",
+	"main": "bot.js",
+	"scripts": {
+		"test": "nodemon .",
+		"start": "node ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/abraga42/Serv-Improvement.git"
+	},
+	"author": "MrSaky",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/abraga42/Serv-Improvement/issues"
+	},
+	"homepage": "https://github.com/abraga42/Serv-Improvement#readme",
+	"dependencies": {
+		"beautify": "^0.0.8",
+		"common-tags": "^1.8.0",
+		"discord.js": "^13.0.1",
+		"dotenv": "^10.0.0",
+		"mongodb": "^4.1.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.12"
+	}
+}
