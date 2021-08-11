@@ -7,6 +7,7 @@ const client = new Client({
 
 client.commands = new Collection();
 client.message_commands = new Collection();
+client.categories = fs.readdirSync("./commands/");
 
 /* Events set */
 const eventFiles = fs
@@ -33,17 +34,24 @@ for (const file of msgCommandFiles) {
 }
 
 /* Slash commands set */
-const commandFiles = fs
-	.readdirSync("./commands")
-	.filter((file) => file.endsWith(".js"));
+fs.readdirSync(process.cwd() + "/commands/").forEach((dir) => {
+	const commandFiles = fs
+		.readdirSync(`${process.cwd()}/commands/${dir}/`)
+		.filter((file) => file.endsWith(".js"));
 
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
-}
+	for (const file of commandFiles) {
+		const command = require(`${process.cwd()}/commands/${dir}/${file}`);
+		client.commands.set(command.data.name, command);
+
+		client.guilds.cache
+			.get(process.env.GUILD_ID)
+			?.commands.create(command.data);
+	}
+});
 
 /* Slash commands handler */
 client.on("interactionCreate", async (interaction) => {
+	console.log(interaction.commandName);
 	if (!interaction.isCommand()) return;
 
 	if (!client.commands.has(interaction.commandName)) return;

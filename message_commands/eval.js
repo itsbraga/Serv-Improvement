@@ -5,6 +5,7 @@ module.exports = {
 	name: "eval",
 	description: "Evaluate code",
 	usage: "<code to eval>",
+	category: "admin",
 	async execute(msg, args) {
 		if (msg.author.id !== process.env.OWNER_ID) {
 			return msg.reply("Nope!").then((m) => m.delete(5000));
