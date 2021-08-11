@@ -18,7 +18,11 @@ module.exports = {
 				const command = require(`${process.cwd()}/commands/${dir}/${file}`);
 				client.commands.set(command.data.name, command);
 
-				msg.guild.commands.create(command.data);
+				if (process.env.DEV_MODE == "true") {
+					msg.guild.commands.create(command.data);
+				} else {
+					client.commands.create(commands.data);
+				}
 			}
 		});
 		console.log("Deployment done.");

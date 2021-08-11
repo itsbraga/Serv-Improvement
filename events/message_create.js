@@ -9,6 +9,13 @@ module.exports = {
 			const cmdName = args.shift().toLowerCase();
 			const cmd = client.message_commands.get(cmdName);
 
+			if (
+				cmd.category === "admin" &&
+				(!msg.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
+					msg.channel.type === "dm")
+			)
+				return msg.reply("You dont have the perms.");
+
 			try {
 				console.log(
 					`[${msg.author.tag}] use ${prefix}${cmd.name} ${args.join(" ")}`
