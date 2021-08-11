@@ -43,9 +43,16 @@ fs.readdirSync(process.cwd() + "/commands/").forEach((dir) => {
 		const command = require(`${process.cwd()}/commands/${dir}/${file}`);
 		client.commands.set(command.data.name, command);
 
-		client.guilds.cache
-			.get(process.env.GUILD_ID)
-			?.commands.create(command.data);
+		if (process.env.DEV_MODE == "true") {
+			client.guilds.cache
+				.get(process.env.GUILD_ID)
+				?.commands.create(command.data);
+		} else {
+			client.guilds.cache
+				.get(process.env.GUILD_ID)
+				?.commands.create(command.data);
+			// client.application.commands.create(command.data);
+		}
 	}
 });
 
