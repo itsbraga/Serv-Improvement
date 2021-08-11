@@ -7,6 +7,10 @@ module.exports = {
 		.setDescription("Replies with Pong!"),
 
 	async execute(interaction) {
-		await interaction.reply("Pong!");
+		await interaction.reply(
+			`🏓\n Ping : ${
+				Date.now() - interaction.createdTimestamp
+			}ms\n API's Ping: ${interaction.client.ws.ping}ms`
+		);
 	},
 };
