@@ -20,7 +20,6 @@ module.exports = {
 				.map((cmd) => `• ${cmd.data.name}`)
 				.join("\n");
 		};
-		interaction.client.categories.map((cat) => console.log(commands(cat)));
 
 		/* General help */
 		if (!interaction.options.getString("command")) {
@@ -38,17 +37,31 @@ module.exports = {
 					].join("\n")
 				)
 				.setFooter(`</> with ❤ for Moineau 42`);
-			await interaction.client.categories.map((cat) => {
+
+			/* Only show command that the user can use */
+			const categories = interaction.member.permissions.has("ADMINISTRATOR")
+				? interaction.client.categories
+				: interaction.client.categories.filter(
+						(cat) => !["test", "staff"].includes(cat)
+				  );
+			await categories.map((cat) => {
 				data.addField(cat, commands(cat).toString(), true);
 			});
 
-			interaction.reply("⬇️");
-			return interaction.channel.send({ embeds: [data] }).catch((er) => {
-				console.error(
-					`Could not reply help to ${interaction.author.tag}.\n${er}`
-				);
-				interaction.reply("Ooops ! There is an error, try again later🤪");
-			});
+			return interaction.member
+				.send({ embeds: [data] })
+				.then((msg) =>
+					interaction.reply({ content: "Check your DM", ephemeral: true })
+				)
+				.catch((er) => {
+					console.error(
+						`Could not reply help to ${interaction.member.user.tag}.\n${er}`
+					);
+					interaction.reply({
+						content: "Ooops ! Seems like I can't send you a DM.",
+						ephemeral: true,
+					});
+				});
 		}
 
 		/* Help on a specific command */
@@ -57,9 +70,14 @@ module.exports = {
 			.toLowerCase();
 		const cmd = interaction.client.commands.get(cmdName);
 
-		if (!cmd) {
-			return interaction.reply("This commmand doesn't exist");
-		}
+		if (!cmd) return interaction.reply("This commmand doesn't exist");
+		if (
+			["test", "staff"].includes(cmd.category) &&
+			!interaction.member.permissions.has("ADMINISTRATOR")
+		)
+			return interaction.reply(
+				`${interaction.options.getString("command")} is restricted to admins`
+			);
 
 		data.setTitle(cmd.data.name);
 
@@ -67,8 +85,19 @@ module.exports = {
 		if (cmd.usage)
 			data.addField("Usage", prefix + cmd.name + " " + (cmd.usage || " "));
 
-		await interaction.channel.send({ embeds: [data] });
-
-		return interaction.reply("⬇️");
+		return interaction.member
+			.send({ embeds: [data] })
+			.then((msg) =>
+				interaction.reply({ content: "Check your DM", ephemeral: true })
+			)
+			.catch((err) => {
+				console.error(
+					`Could not reply help to ${interaction.member.user.tag}.\n${err}`
+				);
+				interaction.reply({
+					content: "Ooops ! Seems like I can't send you a DM.",
+					ephemeral: true,
+				});
+			});
 	},
 };

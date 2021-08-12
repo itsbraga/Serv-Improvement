@@ -1,6 +1,8 @@
 require("dotenv").config();
+const { log } = require(process.cwd() + "/Utils.js");
 const fs = require("fs");
 const { Client, Collection, Intents } = require("discord.js");
+const { stripIndent } = require("common-tags");
 const client = new Client({
 	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
@@ -58,7 +60,11 @@ fs.readdirSync(process.cwd() + "/commands/").forEach((dir) => {
 
 /* Slash commands handler */
 client.on("interactionCreate", async (interaction) => {
-	console.log(interaction.commandName);
+	log.info(stripIndent`
+		**${interaction.user.tag}** used /${interaction.commandName}
+		__Channel:__ ${interaction.channel.name}, ${interaction.channel.id}
+		__Guild:__ ${interaction.guild.name}, ${interaction.guild.id}
+	`);
 	if (!interaction.isCommand()) return;
 
 	if (!client.commands.has(interaction.commandName)) return;

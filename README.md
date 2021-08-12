@@ -8,6 +8,7 @@ Change it as your will.
 TOKEN=''
 GUILD_ID=''
 OWNER_ID=''
+LOG_WEBHOOK=''
 MONGO_URI='mongodb://localhost:27017'
 PREFIX="Man "
 DEV_MODE="false"

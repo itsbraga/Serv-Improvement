@@ -11,7 +11,7 @@ module.exports = {
 
 			if (
 				cmd.category === "admin" &&
-				(!msg.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
+				(!msg.member.permissions.has("ADMINISTRATOR") ||
 					msg.channel.type === "dm")
 			)
 				return msg.reply("You dont have the perms.");
