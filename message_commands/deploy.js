@@ -1,4 +1,3 @@
-const {} = require(process.cwd() + "/Utils.js");
 const fs = require("fs");
 
 module.exports = {

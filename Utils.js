@@ -36,4 +36,41 @@ module.exports = {
 			});
 		},
 	},
+	Player: class Player {
+		constructor(user) {
+			this.name = user.name;
+			this.tag = user.tag;
+			this.id = user.id;
+			this.xp = user.xp || 0;
+			this.lvl = user.lvl || 0;
+		}
+		static ratio = 1.5;
+
+		get progression() {
+			const current = this.xp - 100 * Player.ratio ** (this.lvl - 1);
+			const roof = this.next_lvl - 100 * Player.ratio ** (this.lvl - 1);
+			return Math.floor((current * 100) / roof);
+		}
+
+		get next_lvl() {
+			return 100 * Player.ratio ** this.lvl;
+		}
+
+		inc_xp(n) {
+			const past = this.lvl;
+			while (n > 0) {
+				this.xp++;
+				this.lvl_up();
+				n--;
+			}
+			return this.lvl - past;
+		}
+		lvl_up() {
+			if (this.xp >= this.next_lvl) {
+				this.lvl++;
+				return true;
+			}
+			return false;
+		}
+	},
 };
