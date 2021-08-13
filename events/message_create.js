@@ -1,18 +1,20 @@
+const { Message } = require("discord.js");
+
 const prefix = process.env.PREFIX;
 module.exports = {
 	name: "messageCreate",
-	async execute(msg) {
+	async execute(msg = new Message()) {
 		const client = msg.client;
 
 		if (msg.content.toLowerCase().startsWith(prefix.toLowerCase())) {
 			const args = msg.content.slice(prefix.length).trim().split(/ +/);
 			const cmdName = args.shift().toLowerCase();
 			const cmd = client.message_commands.get(cmdName);
-
-			if (
-				cmd.category === "admin" &&
-				(!msg.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) ||
-					msg.channel.type === "dm")
+			
+			if (cmd.category === "admin" &&
+				(!msg.member.roles.cache.has('873161912114884648') || //Helpers Serv
+				msg.channel.type === "dm"
+				)
 			)
 				return msg.reply("You dont have the perms.");
 
