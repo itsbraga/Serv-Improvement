@@ -1,3 +1,5 @@
+/* Handle msg commands `${prefix}command [args] */
+
 const prefix = process.env.PREFIX;
 module.exports = {
 	name: "messageCreate",
@@ -8,7 +10,7 @@ module.exports = {
 			const args = msg.content.slice(prefix.length).trim().split(/ +/);
 			const cmdName = args.shift().toLowerCase();
 			const cmd = client.message_commands.get(cmdName);
-
+			console.log(cmd);
 			if (
 				cmd.category === "admin" &&
 				(!msg.member.permissions.has("ADMINISTRATOR") ||

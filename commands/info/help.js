@@ -1,16 +1,19 @@
 const { MessageEmbed } = require("discord.js");
 
-const { SlashCommandBuilder } = require("@discordjs/builders");
-
 module.exports = {
 	category: "info",
-	data: new SlashCommandBuilder()
-		.setName("help")
-		.setDescription("List all commands and give informations about")
-		.addStringOption((option) =>
-			option.setName("command").setDescription("The command you want help on")
-		),
-
+	global: "true",
+	data: {
+		name: "help",
+		description: "List all commands and give informations about",
+		options: [
+			{
+				type: "STRING",
+				name: "command",
+				description: "The command you want help on",
+			},
+		],
+	},
 	async execute(interaction) {
 		const prefix = process.env.PREFIX;
 		const data = new MessageEmbed().setColor("RANDOM");

@@ -3,18 +3,24 @@ const { stripIndents } = require("common-tags");
 
 module.exports = {
 	category: "test",
-	data: new SlashCommandBuilder()
-		.setName("echo")
-		.setDescription("Replies with your input!")
-		.addStringOption((option) =>
-			option
-				.setName("input")
-				.setDescription("The input to echo back")
-				.setRequired(true)
-		)
-		.addChannelOption((option) =>
-			option.setName("dst").setDescription("The channel destionation")
-		),
+	global: "true",
+	data: {
+		name: "echo",
+		description: "Send your input in the channel you choose",
+		options: [
+			{
+				type: "STRING",
+				name: "input",
+				description: "The input to echo",
+				required: true,
+			},
+			{
+				type: "CHANNEL",
+				name: "dst",
+				description: "The channel of destionation",
+			},
+		],
+	},
 
 	async execute(interaction) {
 		const content = interaction.options.getString("input");

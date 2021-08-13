@@ -9,7 +9,7 @@ module.exports = {
 		const client = msg.client;
 
 		/* Slash commands set */
-		fs.readdirSync(process.cwd() + "/commands/").forEach((dir) => {
+		fs.readdirSync(process.cwd() + "/commands/").forEach(async (dir) => {
 			const commandFiles = fs
 				.readdirSync(`${process.cwd()}/commands/${dir}/`)
 				.filter((file) => file.endsWith(".js"));
@@ -18,10 +18,11 @@ module.exports = {
 				const command = require(`${process.cwd()}/commands/${dir}/${file}`);
 				client.commands.set(command.data.name, command);
 
-				if (process.env.DEV_MODE == "true") {
-					msg.guild.commands.create(command.data);
+				if (command.global === "true" && process.env.DEV_MODE !== "true") {
+					if (!client.application?.owner) await client.application?.fetch();
+					client.application.commands.create(command.data);
 				} else {
-					client.commands.create(commands.data);
+					msg.guild.commands.create(command.data);
 				}
 			}
 		});
