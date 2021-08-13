@@ -1,9 +1,10 @@
 /* Handle msg commands `${prefix}command [args] */
+const { Message } = require("discord.js");
 
 const prefix = process.env.PREFIX;
 module.exports = {
 	name: "messageCreate",
-	async execute(msg) {
+	async execute(msg = new Message()) {
 		const client = msg.client;
 
 		if (msg.content.toLowerCase().startsWith(prefix.toLowerCase())) {
