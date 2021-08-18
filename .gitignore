@@ -3,3 +3,4 @@ node_modules
 old
 meteo
 .DS_Store
+test*
