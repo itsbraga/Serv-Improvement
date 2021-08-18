@@ -1,32 +1,132 @@
-## .env
+# Man bot
 
-The **.env** is more flexible than the **config.json**. Especially when you deploy and host the bot.
+This bot is dev for both personal user and moineaux 42
 
-Change it as your will.
+## Environment Variables
 
-```env
-TOKEN=''
-GUILD_ID=''
-OWNER_ID=''
-LOG_WEBHOOK=''
-MONGO_URI='mongodb://localhost:27017'
-PREFIX="Man "
-DEV_MODE="false"
+To run this project, you will need to add the following environment variables to your .env file
+
+`TOKEN`
+
+`MONGO_URI`
+
+`PREFIX`="Man "
+
+`NODE_ENV`="development"
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone -b shocquen https://github.com/abraga42/Serv-Improvement.git my-project
 ```
 
-## commands
+Go to the project directory
 
-With discord.js v 13 we have the **slash commands** but we still have the use of the **_classic_ commands** (!deploy, !free, ...).
+```bash
+  cd my-project
+```
 
-### There are 3 handlers :
+Install dependencies
 
-- events
-- slash commands
-- _classic_ commands ( set in bot.js and handled in /events/message_create.js )
+```bash
+  npm install
+```
 
-To add a command, an event or a slash command, please follow exemple of `module.exports` in existing commands. It'll help a lot.
+Start the bot
 
-## Npm scripts
+```bash
+  npm run start
+```
 
-When we work with **node** we work whit **npm**. You already know `npm install`, but you can make your own npm scripts in **package.json**
-I advise the use of **nodemon** that will rerun for you the code every time you save a file.
+## Add a command
+
+Folder: `/commands/`
+
+```js
+module.exports = {
+	category: "cat",
+	global: "true", //useless for the moment
+	data: {
+		name: "cmd",
+		description: "This is a command",
+		options: [
+			{
+				type: "STRING",
+				name: "option_1",
+				description: "An option",
+			},
+		],
+	}
+	async execute(interaction) {
+		// Handle the interaction here
+	}
+}
+```
+
+## Add an event
+
+Folder: `/events/`
+
+```js
+module.exports = {
+	name: "ready",
+	once: true, // not required
+	async execute(client) {
+		console.log(`${client.user.tag} ready!`);
+		client.user.setPresence({
+			status: "available",
+		});
+		client.user.setActivity({
+			type: "WATCHING",
+			name: "The norminette",
+		});
+	},
+};
+```
+
+## use mongodb
+
+If you write in the DB I'm not responsible for any bugs
+
+```
+db/
+	configs/
+		document
+	users/
+		document
+```
+
+### configs documents
+
+```json
+{
+	"id": "", // Guild id
+	"name": "", // Guild name
+	"webhook": "", // URL's webhook for the logs
+	"commands": ["all"], // all or the commands names
+	"admin": "520256478859493387" // the admin role
+}
+```
+
+### users documents
+
+```json
+{
+	"name": "Saky",
+	"tag": "Saky#3566",
+	"id": "212581406344216578",
+	"xp": 2147483647, // Interger (^_−)☆ | Min = 100
+	"lvl": 9001, // Min = 1
+	"titles": ["Author", "sushi eater", "beer lover"] // Can be use in /user_info
+}
+```
+
+## Tech Stack
+
+**Server:** Node, Discord.js
+
+## Authors
+
+- [@MrSaky](https://www.github.com/MrSaky)

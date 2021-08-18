@@ -1,0 +1,32 @@
+{
+	"signes": {
+		"Mon": "Carpe",
+		"Tue": "Phasme",
+		"Wed": "Plaid",
+		"Thu": "Saucisse",
+		"Fri": "Clodo",
+		"Sat": "Escalier",
+		"Sun": "Chacal"
+	},
+
+	"roles": {
+		"Carpe": "848854375728152586",
+		"Phasme": "848854381377749012",
+		"Plaid": "848854385798676481",
+		"Saucisse": "848854394288209930",
+		"Clodo": "848854389825470464",
+		"Escalier": "848854398431002674",
+		"Chacal": "848854401749483521"
+	},
+	"rolesA": {
+		"Carpe": "851895870621614160",
+		"Phasme": "851895874274721833",
+		"Plaid": "851895878042386458",
+		"Saucisse": "851895881820536843",
+		"Clodo": "851895885729366086",
+		"Escalier": "851895889634787338",
+		"Chacal": "851895893225635950"
+	},
+
+	"uri": "https://www.allocine.fr/_/showtimes/theater-"
+}

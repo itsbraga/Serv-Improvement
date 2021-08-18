@@ -1,7 +1,10 @@
 {
-	"name": "man",
-	"version": "1.0.0",
+	"name": "savante",
+	"version": "2.0.0",
 	"description": "Bots projects for our Serv",
+	"engines": {
+		"node": "16.x"
+	},
 	"main": "bot.js",
 	"scripts": {
 		"test": "nodemon .",
@@ -12,13 +15,12 @@
 		"url": "git+https://github.com/abraga42/Serv-Improvement.git"
 	},
 	"author": "MrSaky",
-	"license": "ISC",
+	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/abraga42/Serv-Improvement/issues"
 	},
 	"homepage": "https://github.com/abraga42/Serv-Improvement#readme",
 	"dependencies": {
-		"@discordjs/rest": "^0.1.0-canary.0",
 		"ascii-table": "^0.0.9",
 		"beautify": "^0.0.8",
 		"common-tags": "^1.8.0",

@@ -1,5 +1,17 @@
-const { WebhookClient, MessageEmbed } = require("discord.js");
-const whClient = new WebhookClient({ url: process.env.LOG_WEBHOOK });
+const { stripIndent } = require("common-tags");
+const { WebhookClient } = require("discord.js");
+const { MongoClient } = require("mongodb");
+const get_webhhok = async (guild) => {
+	const mongo = await MongoClient.connect(process.env.MONGO_URI, {
+		useUnifiedTopology: true,
+	});
+	const col = mongo.db("Savante").collection("configs");
+	const target = await col.findOne({ id: guild.id });
+
+	if (!target) return null;
+
+	return target.webhook;
+};
 
 module.exports = {
 	wait: (ms) => {
@@ -17,32 +29,56 @@ module.exports = {
 	},
 
 	log: {
-		error: (err, ctx) => {
+		error: async (guild, err, ctx) => {
+			console.error(err);
+			const webhook = await get_webhhok(guild);
+			if (!webhook) return;
+			const whClient = new WebhookClient({ url: webhook });
 			whClient.send({
 				username: "Error",
 				content: `${ctx}\n\`\`\`diff\n-${err}\n\`\`\``,
 			});
 		},
-		warn: (ctx) => {
+		warn: async (guild, ctx) => {
+			console.warn(ctx);
+			const webhook = await get_webhhok(guild);
+			if (!webhook) return;
+			const whClient = new WebhookClient({ url: webhook });
 			whClient.send({
 				username: "Warn",
-				content: `\n\`\`\`fix\n${ctx}\n\`\`\``,
+				content: `\`\`\`fix\n${ctx}\n\`\`\``,
 			});
 		},
-		info: (ctx) => {
+		info: async (guild, ctx) => {
+			console.log(ctx);
+			const webhook = await get_webhhok(guild);
+			if (!webhook) return;
+			const whClient = new WebhookClient({ url: webhook });
 			whClient.send({
 				username: "info",
-				content: ctx,
+				content: "```\n" + ctx + "```\n",
 			});
 		},
 	},
+
+	database: {
+		add: async (col, player) => {
+			try {
+				await col.insertOne(player);
+			} catch (err) {
+				console.error(err);
+			}
+		},
+	},
+
 	Player: class Player {
 		constructor(user) {
-			this.name = user.name;
+			this.name = user.username;
 			this.tag = user.tag;
 			this.id = user.id;
 			this.xp = user.xp || 0;
 			this.lvl = user.lvl || 0;
+			this.titles = user.titles || [];
 		}
 		static ratio = 1.5;
 
@@ -55,6 +91,9 @@ module.exports = {
 		get next_lvl() {
 			return 100 * Player.ratio ** this.lvl;
 		}
+		get past_lvl() {
+			return 100 * Player.ratio ** (this.lvl - 1);
+		}
 
 		inc_xp(n) {
 			const past = this.lvl;
@@ -65,12 +104,24 @@ module.exports = {
 			}
 			return this.lvl - past;
 		}
+		red_xp(n) {
+			const past = this.lvl;
+			while (n < 0) {
+				this.xp--;
+				this.lvl_down();
+				n++;
+			}
+			return past - this.lvl;
+		}
 		lvl_up() {
 			if (this.xp >= this.next_lvl) {
 				this.lvl++;
-				return true;
 			}
-			return false;
+		}
+		lvl_down() {
+			if (this.xp <= this.past_lvl) {
+				this.lvl--;
+			}
 		}
 	},
 };

@@ -1,17 +1,23 @@
 /* Handle msg commands `${prefix}command [args] */
-const { Message } = require("discord.js");
+const { MongoClient } = require("mongodb");
 
 const prefix = process.env.PREFIX;
 module.exports = {
 	name: "messageCreate",
-	async execute(msg = new Message()) {
+	async execute(msg) {
 		const client = msg.client;
+		// MongoClient.connect(process.env.MONGO_URI, {
+		// 	useUnifiedTopology: true,
+		// }).then(async (mongo) => {
+		// 	const col = mongo.db("Savante").collection("configs");
+		// 	const target = col.findOne({ id: msg.guild.id });
+		// 	if (target?.prefix) prefix = target.prefix;
+		// });
 
 		if (msg.content.toLowerCase().startsWith(prefix.toLowerCase())) {
 			const args = msg.content.slice(prefix.length).trim().split(/ +/);
 			const cmdName = args.shift().toLowerCase();
 			const cmd = client.message_commands.get(cmdName);
-			console.log(cmd);
 			if (
 				cmd.category === "admin" &&
 				(!msg.member.permissions.has("ADMINISTRATOR") ||

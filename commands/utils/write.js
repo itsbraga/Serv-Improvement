@@ -1,12 +1,12 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
 const { stripIndents } = require("common-tags");
 
 module.exports = {
-	category: "test",
+	category: "utils",
 	global: "true",
 	data: {
-		name: "echo",
-		description: "Send your input in the channel you choose",
+		name: "write",
+		description: "Write your input in the channel you choose",
+		defaultPermission: false,
 		options: [
 			{
 				type: "STRING",
