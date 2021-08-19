@@ -1,5 +1,7 @@
 const fs = require("fs");
 
+const { set_guilds_commands } = require(process.cwd() + "/events/set_commands");
+
 module.exports = {
 	name: "deploy",
 	description: "deploy commands",
@@ -17,11 +19,15 @@ module.exports = {
 				const command = require(`${process.cwd()}/commands/${dir}/${file}`);
 				client.commands.set(command.data.name, command);
 
-				if (command.global === "true" && process.env.DEV_MODE !== "true") {
+				if (
+					command.global === "true" &&
+					process.env.NODE_ENV !== "development"
+				) {
 					if (!client.application?.owner) await client.application?.fetch();
 					client.application.commands.create(command.data);
 				} else {
-					msg.guild.commands.create(command.data);
+					if (!client.application?.owner) await client.application?.fetch();
+					await set_guilds_commands(client, command);
 				}
 			}
 		});
