@@ -20,8 +20,7 @@ module.exports = {
 		const embedAvatar = new MessageEmbed()
 			.setDescription(interaction.options.getString("target") + "'s 42 picture :")
             .setColor('BLURPLE')
-	        .setImage("https://cdn.intra.42.fr/users/" + interaction.options.getString("target") + ".jpg")
+	        .setImage("https://cdn.intra.42.fr/users/large_" + interaction.options.getString("target") + ".jpg")
         interaction.reply({ embeds: [embedAvatar] });
-        console.log(("https://cdn.intra.42.fr/users/" + interaction.options.getString("target") + ".jpg"));
 	},
 };
