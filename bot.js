@@ -31,7 +31,6 @@ client
 		console.log(stripIndents`
 		» ${process.env.npm_package_name}@${process.env.npm_package_version}
 		» node@${process.version}
-		
 	`)
 	)
 	.catch((err) => console.error(err));

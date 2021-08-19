@@ -1,10 +1,11 @@
 /* Handle msg commands `${prefix}command [args] */
 const { MongoClient } = require("mongodb");
+const { Message } = require("discord.js");
 
 const prefix = process.env.PREFIX;
 module.exports = {
 	name: "messageCreate",
-	async execute(msg) {
+	async execute(msg = new Message()) {
 		const client = msg.client;
 		// MongoClient.connect(process.env.MONGO_URI, {
 		// 	useUnifiedTopology: true,
@@ -20,7 +21,8 @@ module.exports = {
 			const cmd = client.message_commands.get(cmdName);
 			if (
 				cmd.category === "admin" &&
-				(!msg.member.permissions.has("ADMINISTRATOR") ||
+				((!msg.member.permissions.has("ADMINISTRATOR")
+					&& msg.member.id != process.env.OWNER_ID) ||
 					msg.channel.type === "dm")
 			)
 				return msg.reply("You dont have the perms.");

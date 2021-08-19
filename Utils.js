@@ -73,7 +73,7 @@ module.exports = {
 
 	Player: class Player {
 		constructor(user) {
-			this.name = user.username;
+			this.name = user.username || user.name;
 			this.tag = user.tag;
 			this.id = user.id;
 			this.xp = user.xp || 0;
